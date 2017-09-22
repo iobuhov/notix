@@ -1,25 +1,18 @@
 const webpack = require('webpack');
-const paths = require('./paths');
-
-const { DefinePlugin, NoEmitOnErrorsPlugin } = webpack;
-// const { UglifyJsPlugin } = webpack.optimize;
+const { paths } = require('../config');
+const { NoEmitOnErrorsPlugin } = webpack;
 
 module.exports = {
-  conf: {
+  config: {
     output: {
-      path: paths.DIST,
+      path: paths.dist,
       filename: '[name].bundle.js',
     },
     resolve: {
-      extensions: ['.js', '.jsx'],
       modules: ['node_modules'],
     },
     plugins: [
       new NoEmitOnErrorsPlugin(),
-      new DefinePlugin({
-        RDE_COMPOSE: JSON.stringify('__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'),
-        PRE_ST: JSON.stringify('__PRELOADED_STATE__'),
-      }),
     ],
     module: {
       rules: [
