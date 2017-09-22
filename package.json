@@ -33,6 +33,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
+    "plop": "^1.8.1",
     "react-hot-loader": "^3.0.0-beta.7",
     "start-server-webpack-plugin": "^2.2.0",
     "webpack": "^3.5.5",
