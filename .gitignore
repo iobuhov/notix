@@ -17,7 +17,7 @@ dist
 *~
 
 
-# OS or Editor folders
+# OS or Editor folders/files
 *.sublime-grunt.cache
 *.sublime-project
 *.sublime-workspace
@@ -31,6 +31,7 @@ dist
 .settings
 .tmproj
 Thumbs.db
+.projectile
 
 # Folders to ignore
 .CVS
