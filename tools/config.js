@@ -1,5 +1,5 @@
 const path = require('path');
-const root = path.resolve('..');
+const root = process.cwd();
 const join = path.join.bind(null, root);
 
 module.exports = {
