@@ -1,0 +1,42 @@
+{
+  "extends": ["plugin:jsx-control-statements/recommended", "airbnb"],
+  "parser": "babel-eslint",
+  "plugins": ["react", "jsx-control-statements", "babel"],
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true,
+    "jsx-control-statements/jsx-control-statements": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "globals": {
+    "SSR": true,
+    "RDE_COMPOSE": true,
+    "PRE_ST": true
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "tools/webpack/client.dev.js"
+      }
+    }
+  },
+  "rules": {
+    "indent": ["error", 2, {"SwitchCase": 0}],
+    "jsx-quotes": ["error", "prefer-double"],
+    "comma-dangle": ["error", "always-multiline"],
+    "react/prefer-stateless-function": "off",
+    "react/jsx-no-undef": ["error", { "allowGlobals": true }],
+    "no-shadow": ["error", {"allow": ["e", "error", "err"]}],
+    "no-debugger": ["warn"],
+    "consistent-return": "off",
+    "array-callback-return": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-undef": "off",
+    "jsx-control-statements/jsx-jcs-no-undef": "error"
+  }
+}
