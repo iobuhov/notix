@@ -10,6 +10,7 @@ module.exports = {
     },
     resolve: {
       modules: ['node_modules'],
+      extensions: ['.js', '.jsx'],
     },
     plugins: [
       new NoEmitOnErrorsPlugin(),
@@ -24,8 +25,8 @@ module.exports = {
         },
         {
           test: /\.jsx?$/,
-          use: 'babel-loader',
           exclude: /node_modules/,
+          loader: 'babel-loader',
         },
       ],
     },

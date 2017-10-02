@@ -1,15 +1,14 @@
 const path = require('path');
-const root = process.cwd();
+const root = path.resolve(__dirname, '..');
 const join = path.join.bind(null, root);
 
 module.exports = {
   paths: {
     root,
     app: join('app'),
-    'app.components': join('app', 'components'),
     lib: join('lib'),
-    'lib.components': join('lib', 'components'),
     dist: join('dist'),
     server: join('server'),
+    utils: join('utils'),
   },
 };

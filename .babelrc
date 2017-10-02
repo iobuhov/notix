@@ -2,12 +2,16 @@
   "presets": [
     ["env", {
       "targets": {
-        "browsers": ["last 2 Chrome versions"]
+        "browsers": ["last 2 versions"]
       },
       "modules": false
     }],
     "react",
     "stage-2"
   ],
-  "plugins": ["react-hot-loader/babel"]
+  "plugins": [
+    "jsx-control-statements",
+    "react-hot-loader/babel",
+    "babel-plugin-styled-components"
+  ]
 }
