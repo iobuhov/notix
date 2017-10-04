@@ -8,7 +8,7 @@ const { HotModuleReplacementPlugin,
 const { CommonsChunkPlugin } = webpack.optimize;
 
 const HOST = process.env.IP || '0.0.0.0';
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 const config = {
   target: 'web',

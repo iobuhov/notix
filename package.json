@@ -11,6 +11,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "iscroll": "^5.2.0",
+    "react-iscroll": "^2.0.3",
     "styled-components": "^2.1.2"
   },
   "devDependencies": {

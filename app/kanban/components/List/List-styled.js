@@ -7,6 +7,7 @@ import {
 
 export const Container = Panel.extend`
   min-height: 20px;
+  width: 280px;
 `;
 
 export const Heading = PanelHeading.extend`

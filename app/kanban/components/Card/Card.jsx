@@ -10,7 +10,7 @@ export default class Card extends PureComponent {
     return (
       <Box>
         <Heading>{this.props.value}</Heading>
-        <TextArea>Body goes hear...</TextArea>
+        <TextArea defaultValue="Body goes hear..." />
       </Box>
     );
   }

@@ -1,36 +1,44 @@
 import React, { Component } from 'react';
-import {
-  ContainerFluid, Row, Col,
-} from 'lib';
+import iScroll from 'iscroll';
+import { Container, Col, Board, ScrollBox } from './Kanban-styled';
 import List from '../List';
+
+const iscrollOptions = {
+  scrollbars: true,
+  mouseWheel: true,
+  scrollX: true,
+  scrollY: false,
+  click: false,
+  disablePointer: true,
+  eventPassthrough: true,
+  mouseWheelScrollsHorizontally: false,
+  fadeScrollbars: true,
+};
 
 export default class Kanban extends Component {
   render() {
+    const items = [
+      <List heading="Main" button="Add" />,
+      <List heading="Second" button="Add" />,
+      <List heading="Example" button="Add" />,
+      <List heading="Cars" button="Add" />,
+      <List heading="Addons" button="Add" />,
+      <List heading="Packs" button="Add" />,
+      <List heading="Solar" button="Add" />,
+    ];
+
     return (
-      <ContainerFluid>
-        <Row>
-          <Col>
-            <h2>Kanban</h2>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={2.4}>
-            <List heading="Main" button="Add" />
-          </Col>
-          <Col xs={2.4}>
-            <List heading="Second" button="Add" />
-          </Col>
-          <Col xs={2.4}>
-            <List heading="Example" button="Add" />
-          </Col>
-          <Col xs={2.4}>
-            <List heading="Cars" button="Add" />
-          </Col>
-          <Col xs={2.4}>
-            <List heading="Addons" button="Add" />
-          </Col>
-        </Row>
-      </ContainerFluid>
+      <Container>
+        <ScrollBox iScroll={iScroll} options={iscrollOptions}>
+          <Board size={items.length}>
+            <For each="item" index="idx" of={items}>
+              <Col key={`${Math.random()}`}>
+                {item}
+              </Col>
+            </For>
+          </Board>
+        </ScrollBox>
+      </Container>
     );
   }
 }

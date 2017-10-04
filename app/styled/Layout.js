@@ -8,10 +8,16 @@ export const Sidebar = styled.div`
   background-color: #1f2428;
   /* background-color: #272b2f; */
   border-right: 1px solid #171D1B;
+  flex: 0 1 300px;
+  @media (min-width: 1200px) {
+    display: block;
+  }
 `;
 
 export const Content = styled.div`
-  flex-grow: 1;
+  width: calc(100% - 300px);
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Page = styled.div`

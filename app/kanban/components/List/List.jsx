@@ -5,7 +5,7 @@ import { Button } from 'lib';
 import {
   Container, Heading, Body,
   Input, Field, FieldButton,
-} from './List.styled';
+} from './List-styled';
 
 import Card from '../Card';
 
