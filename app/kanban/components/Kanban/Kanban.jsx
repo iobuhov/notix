@@ -1,7 +1,8 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import iScroll from 'iscroll';
-import { Container, Col, Board, ScrollBox } from './Kanban-styled';
-import List from '../List';
+import { Container, ScrollBox } from './Kanban-styled';
+import Board from '../Board';
 
 const iscrollOptions = {
   scrollbars: true,
@@ -15,29 +16,15 @@ const iscrollOptions = {
   fadeScrollbars: true,
 };
 
+/* <ScrollBox iScroll={iScroll} options={iscrollOptions}>
+ * </ScrollBox>
+ * */
+
 export default class Kanban extends Component {
   render() {
-    const items = [
-      <List heading="Main" button="Add" />,
-      <List heading="Second" button="Add" />,
-      <List heading="Example" button="Add" />,
-      <List heading="Cars" button="Add" />,
-      <List heading="Addons" button="Add" />,
-      <List heading="Packs" button="Add" />,
-      <List heading="Solar" button="Add" />,
-    ];
-
     return (
       <Container>
-        <ScrollBox iScroll={iScroll} options={iscrollOptions}>
-          <Board size={items.length}>
-            <For each="item" index="idx" of={items}>
-              <Col key={`${Math.random()}`}>
-                {item}
-              </Col>
-            </For>
-          </Board>
-        </ScrollBox>
+        <Board />
       </Container>
     );
   }

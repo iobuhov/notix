@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Box = styled.div`
-  border-radius: .25rem;
+  border-radius: 4px;
   background-color: #6b7379;
   margin-bottom: .625rem;
   &:last-of-type {

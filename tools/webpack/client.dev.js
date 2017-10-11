@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 const config = {
   target: 'web',
-  devtool: 'inline',
+  devtool: 'eval-source-map',
   entry: {
     app: [
       'react-hot-loader/patch',
