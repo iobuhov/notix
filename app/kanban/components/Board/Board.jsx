@@ -1,81 +1,84 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { CardSetRecord } from 'kanban/records';
 import { Box, Col } from './Board-styled';
+/* import DraggableList from '../DraggableList'; */
 import List from '../List';
 
-export default class Board extends Component {
-  constructor() {
-    super();
-    this.state = {
-      holding: null,
-      holdingPosition: null,
-      items: [
-        'Main', 'Second', 'Example',
-        'Cars', 'Addons', 'Packs',
-        'Soda', 'Vaccum', 'Lake',
-      ],
-    };
-  }
+export default (function BoardContext() {
+  const controlledPosition = Symbol('controlledPosition');
 
-  onMouseEnter = index => () => {
-    const { holding } = this.state;
-    if (holding !== null) {
-      if (holding !== index) {
-        this.swap(index, holding);
+  return class Board extends PureComponent {
+    static propTypes = {
+      items: ImmutablePropTypes.listOf(CardSetRecord).isRequired,
+      // onCardDrop: PropTypes.func.isRequired,
+      onCardSetOverlap: PropTypes.func.isRequired,
+    }
+
+    constructor() {
+      super();
+      this[controlledPosition] = undefined;
+      this.state = {
+        holding: undefined,
+      };
+    }
+
+    onMouseEnter = (id) => {
+      const { onCardSetOverlap } = this.props;
+      const { holding } = this.state;
+
+      if (holding && holding !== id) {
+        onCardSetOverlap(holding, id);
       }
     }
 
-    /* console.log(this.state.holding, index); */
+    onDragStart = (id) => {
+      this.setState({ holding: id });
+    }
+
+    onDrag = (_, { x, y }) => {
+      this[controlledPosition] = { x, y };
+      console.log('Position:', { x, y });
+    }
+
+    onDragStop = () => {
+      this.positionReset();
+      this.setState({ holding: undefined });
+    }
+
+    positionReset = () => {
+      this[controlledPosition] = { x: 0, y: 0 };
+    }
+
+    render() {
+      /* debugger; */
+      const { items } = this.props;
+      const { holding } = this.state;
+      const { [controlledPosition]: pos } = this;
+
+      return (
+        <Box>
+          <For each="CardSetRecord" index="idx" of={items}>
+            <With id={CardSetRecord.id} position={{ x: 0 + (idx * 300), y: 0 }}>
+              <Col
+                key={id}
+                onMouseEnter={() => this.onMouseEnter(id)}
+                shadow={holding === id}
+              >
+                <List
+                  heading={CardSetRecord.name}
+                  button="Add"
+                  onStart={this.onDragStart}
+                  onDrag={this.onDrag}
+                  onStop={this.positionReset}
+                  position={holding === id ? pos : position}
+                />
+              </Col>
+            </With>
+          </For>
+        </Box>
+      );
+    }
   };
-
-  onDragStart = id => (position) => {
-    const { x, y } = position;
-    this.setState({ holding: id, holdingPosition: { x, y } });
-  };
-
-  onDrag = (e, position) => {
-    const { x, y } = position;
-    this.setState({ holdingPosition: { x, y } });
-  }
-
-  onDragEnd = () => {
-    this.setState({
-      holding: null,
-      holdingPosition: { x: 0, y: 0 },
-    });
-  };
-
-  getPosition = index => ({ x: index * 300, y: 0 });
-
-  swap = (a, b) => {
-    const { items } = this.state;
-    const item = items[a];
-    items[a] = items[b];
-    items[b] = item;
-
-    this.setState({
-      items: [...items],
-      holding: a,
-    });
-  }
-
-  render() {
-    const { items, holding, holdingPosition } = this.state;
-    const isHolding = (holding !== null) && (holdingPosition !== null);
-    return (
-      <Box id="board" size={items.length}>
-        <For each="item" index="idx" of={items}>
-          <Col key={`col${item}`} onMouseEnter={this.onMouseEnter(idx)} shadow={holding === idx}>
-            <List
-              heading={item}
-              button="Add"
-              onStart={this.onDragStart(idx)}
-              onDrag={this.onDrag}
-              onStop={this.onDragEnd}
-              position={(isHolding && holding === idx) ? holdingPosition : this.getPosition(idx)}
-            />
-          </Col>
-        </For>
-      </Box>
-    );
-  }
-}
+}());

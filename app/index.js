@@ -1,22 +1,27 @@
-/* eslint-disable */
+/* eslint react/jsx-filename-extension: off */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import App from './App.jsx';
+import { Provider } from 'react-redux';
+import App from './App';
+import configureStore from './bootstrap/configureStore';
+import initialState from './bootstrap/initialState';
 import './index.css';
 
 const root = document.getElementById('root');
-const render = (App) => {
+const store = configureStore(initialState);
+
+(function render(Root) {
   ReactDOM.render(
     <AppContainer>
-      <App />
+      <Provider store={store}>
+        <Root />
+      </Provider>
     </AppContainer>,
     root
   );
-}
 
-render(App);
-
-if (module.hot) {
-  module.hot.accept('./App.jsx', () => render(App));
-}
+  if (module.hot) {
+    module.hot.accept('./App', () => render(App));
+  }
+}(App));

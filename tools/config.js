@@ -4,10 +4,11 @@ const join = path.join.bind(null, root);
 
 module.exports = {
   paths: {
-    root,
     app: join('app'),
-    lib: join('lib'),
     dist: join('dist'),
+    kanban: join('app', 'kanban'),
+    lib: join('lib'),
+    root,
     server: join('server'),
     utils: join('utils'),
   },

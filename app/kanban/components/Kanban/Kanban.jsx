@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import iScroll from 'iscroll';
 import { Container, ScrollBox } from './Kanban-styled';
-import Board from '../Board';
+import BoardConnector from '../../connectors/BoardConnector';
 
 const iscrollOptions = {
   scrollbars: true,
@@ -24,7 +24,7 @@ export default class Kanban extends Component {
   render() {
     return (
       <Container>
-        <Board />
+        <BoardConnector />
       </Container>
     );
   }

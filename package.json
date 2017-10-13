@@ -11,9 +11,15 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "immutable": "^3.8.1",
     "iscroll": "^5.2.0",
     "react-draggable": "^3.0.3",
+    "react-immutable-proptypes": "^2.1.0",
     "react-iscroll": "^2.0.3",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-actions": "^2.2.1",
+    "redux-immutable": "^4.0.0",
     "styled-components": "^2.1.2"
   },
   "devDependencies": {

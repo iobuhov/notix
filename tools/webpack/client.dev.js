@@ -35,6 +35,7 @@ const config = {
       // 'lib/components': paths['lib.components'],
       lib: paths.lib,
       utils: paths.utils,
+      kanban: paths.kanban,
     },
   },
   devServer: {
