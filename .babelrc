@@ -11,7 +11,7 @@
   ],
   "plugins": [
     "jsx-control-statements",
-    "react-hot-loader/babel",
-    "babel-plugin-styled-components"
+    "babel-plugin-styled-components",
+    "react-hot-loader/babel"
   ]
 }

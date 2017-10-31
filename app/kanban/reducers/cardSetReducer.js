@@ -6,14 +6,18 @@ import * as cardSetConstatns from 'kanban/constants/cardSetConstants';
 
 const initState = List();
 
+const findIndexById = list => id => list.findIndex(x => x.id === id);
+
 const addCardSet = (cardSetList, { payload }) => {
   return cardSetList.push(new CardSetRecord(payload));
 };
 
-const swapCardSet = (cardSetList, { payload: { from, to } }) => {
+const swapCardSet = (cardSetList, { payload: { ids } }) => {
+  const indexes = ids.map(findIndexById(cardSetList));
+  const [from, to] = indexes;
   const next = cardSetList.get(from);
   const prev = cardSetList.get(to);
-  return cardSetList.set(to, next).set(from, prev);
+  return cardSetList.set(from, prev).set(to, next);
 };
 
 export default handleActions({

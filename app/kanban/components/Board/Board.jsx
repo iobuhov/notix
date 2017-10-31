@@ -1,80 +1,87 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { isFunction } from 'typechecker';
 import { CardSetRecord } from 'kanban/records';
-import { Box, Col } from './Board-styled';
-/* import DraggableList from '../DraggableList'; */
-import List from '../List';
+import { Box } from './Board-styled';
+import DraggableCardSet from '../DraggableCardSet';
 
 export default (function BoardContext() {
   const controlledPosition = Symbol('controlledPosition');
 
   return class Board extends PureComponent {
     static propTypes = {
+      dragMode: PropTypes.bool.isRequired,
+      holding: PropTypes.number,
       items: ImmutablePropTypes.listOf(CardSetRecord).isRequired,
-      // onCardDrop: PropTypes.func.isRequired,
       onCardSetOverlap: PropTypes.func.isRequired,
+      onDragStart: PropTypes.func.isRequired,
+      onDragStop: PropTypes.func.isRequired,
+      onPopupOpen: PropTypes.func,
     }
 
-    constructor() {
-      super();
-      this[controlledPosition] = undefined;
-      this.state = {
-        holding: undefined,
-      };
+    static defaultProps = {
+      holding: undefined,
+      onPopupOpen: undefined,
     }
 
-    onMouseEnter = (id) => {
-      const { onCardSetOverlap } = this.props;
-      const { holding } = this.state;
+    handleCardSetEnter = (id) => {
+      const { onCardSetOverlap, holding } = this.props;
 
-      if (holding && holding !== id) {
+      if (holding !== undefined && holding !== id) {
         onCardSetOverlap(holding, id);
       }
     }
 
     onDragStart = (id) => {
-      this.setState({ holding: id });
+      this.props.onDragStart(id);
     }
 
-    onDrag = (_, { x, y }) => {
+    onDrag = (id, e, { x, y }) => {
       this[controlledPosition] = { x, y };
-      console.log('Position:', { x, y });
     }
 
     onDragStop = () => {
       this.positionReset();
-      this.setState({ holding: undefined });
+      this.props.onDragStop();
+    }
+
+    onPopupOpen = (...args) => {
+      const { onPopupOpen } = this.props;
+      if (isFunction(onPopupOpen)) onPopupOpen(...args);
     }
 
     positionReset = () => {
-      this[controlledPosition] = { x: 0, y: 0 };
+      this[controlledPosition] = null;
     }
 
     render() {
-      /* debugger; */
-      const { items } = this.props;
-      const { holding } = this.state;
-      const { [controlledPosition]: pos } = this;
+      const { items, holding, dragMode } = this.props;
+      const { [controlledPosition]: controlledPos } = this;
+      const isHolding = typeof holding !== 'undefined';
+
 
       return (
-        <Box>
-          <For each="CardSetRecord" index="idx" of={items}>
-            <With id={CardSetRecord.id} position={{ x: 0 + (idx * 300), y: 0 }}>
-              <Col
-                key={id}
-                onMouseEnter={() => this.onMouseEnter(id)}
-                shadow={holding === id}
-              >
-                <List
-                  heading={CardSetRecord.name}
-                  button="Add"
-                  onStart={this.onDragStart}
-                  onDrag={this.onDrag}
-                  onStop={this.positionReset}
-                  position={holding === id ? pos : position}
-                />
-              </Col>
+        <Box size={items.size} id="board" dragging={isHolding}>
+          <For each="record" index="idx" of={items}>
+            <With
+              defaultPosition={{ x: 10 + (idx * 300), y: 10 }}
+              isDragging={holding === record.id}
+            >
+              <DraggableCardSet
+                defaultPosition={defaultPosition}
+                disabled={!dragMode}
+                dragging={isDragging}
+                key={record.id}
+                position={isDragging ? controlledPos : null}
+                record={record}
+                silent={isHolding}
+                onCardSetEnter={this.handleCardSetEnter}
+                onDrag={this.onDrag}
+                onMenuOpen={this.onPopupOpen}
+                onStart={this.onDragStart}
+                onStop={this.onDragStop}
+              />
             </With>
           </For>
         </Box>

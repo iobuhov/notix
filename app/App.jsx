@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header } from 'lib';
+import { Header } from 'lib/miracle';
 import { Sidebar, Content, Page } from './styled/Layout';
 import { Kanban } from './kanban';
 

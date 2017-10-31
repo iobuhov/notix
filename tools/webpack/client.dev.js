@@ -31,11 +31,11 @@ const config = {
   },
   resolve: {
     alias: {
-      // 'app/components': paths['app.components'],
-      // 'lib/components': paths['lib.components'],
+      common: paths.common,
+      helpers: paths.helpers,
+      kanban: paths.kanban,
       lib: paths.lib,
       utils: paths.utils,
-      kanban: paths.kanban,
     },
   },
   devServer: {
@@ -44,6 +44,23 @@ const config = {
     historyApiFallback: true,
     hotOnly: true,
     clientLogLevel: 'error',
+    quiet: false,
+    // It suppress everything except error, so it has to be set to false as well
+    // to see success build.
+    noInfo: false,
+    stats: {
+      // Config for minimal console.log mess.
+      assets: false,
+      colors: true,
+      version: false,
+      hash: false,
+      timings: false,
+      chunks: false,
+      chunkModules: false,
+      entrypoints: false,
+      modules: false,
+      moduleTrace: false,
+    },
   },
   plugins: [
     new HtmlPlugin({ template: './app/index.html' }),
