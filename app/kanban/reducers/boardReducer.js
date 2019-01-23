@@ -1,10 +1,11 @@
-import { handleActions, combineActions } from 'redux-actions';
-import { fromJS } from 'immutable';
-import { cardSetReducer } from 'kanban/reducers';
-import { values } from 'ramda';
-import * as cardSetConstatns from 'kanban/constants/cardSetConstants';
 import * as boardConstants from 'kanban/constants/boardConstants';
-import CardSetRecord from '../records/CardSetRecord';
+import * as cardSetConstatns from 'kanban/constants/cardSetConstants';
+import CardSetRecord from 'kanban/records/CardSetRecord';
+// import { TOGGLE_SIDEBAR } from 'sidebar/constants';
+import { cardSetReducer } from 'kanban/reducers';
+import { fromJS } from 'immutable';
+import { handleActions, combineActions } from 'redux-actions';
+import { values } from 'ramda';
 
 const cardSets = [
   'Main', 'Second', 'Example',

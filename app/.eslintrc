@@ -36,9 +36,11 @@
     "consistent-return": "off",
     "array-callback-return": "off",
     "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
+    "import/no-named-default": "off",
     "no-undef": "off",
     "jsx-control-statements/jsx-jcs-no-undef": "error",
-    "import/prefer-default-export": "off",
-    "react/no-did-mount-set-state": "off"
+    "react/no-did-mount-set-state": "off",
+    "template-curly-spacing": "off"
   }
 }

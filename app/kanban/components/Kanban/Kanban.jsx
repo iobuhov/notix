@@ -1,13 +1,18 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import Page from 'common/page';
+import { BoardConnector as Board } from 'kanban/connectors';
 import { Container } from './Kanban-styled';
-import BoardConnector from '../../connectors/BoardConnector';
 
-export default class Kanban extends Component {
+export default class Kanban extends PureComponent {
   render() {
+    const header = <h2>Header</h2>;
+
     return (
-      <Container>
-        <BoardConnector />
-      </Container>
+      <Page header={header}>
+        <Container>
+          <Board />
+        </Container>
+      </Page>
     );
   }
 }

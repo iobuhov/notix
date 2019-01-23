@@ -1,116 +1,159 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Fade } from 'common/animated';
-import { Portal } from 'lib/reco';
-import { isFunction } from 'typechecker';
-import { /* pick, */ sum } from 'ramda';
-import { Container, Menu, MenuBox, Button } from './Dropdown-styled';
+import { isBoolean } from 'typechecker';
+import { isBrowser } from 'lib/reco/utils';
+import { isEscape, safeInvoke } from 'helpers';
+import Ref from 'lib/reco/ref/Ref';
+// import { pick } from 'ramda';
+import Popover from 'common/popover/Popover';
 
-const dropdownOverlay = document.getElementById('dropdown-overlay');
+// const childContextProps = pick(['isOpen']);
 
 export default class Dropdown extends Component {
   static propTypes = {
-    absolute: PropTypes.bool, // eslint-disable-line
-    left: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
+    /**
+     * Whether the dropdown is visible.
+     * @default false
+     */
+    // isOpen: PropTypes.bool,
+    /**
+     * Callback invoked when trigger is clicked.
+     */
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.element),
+      PropTypes.element,
     ]),
-    open: PropTypes.bool.isRequired,
-    overlay: PropTypes.bool,
-    // relative: PropTypes.bool,
-    top: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
-    onClick: PropTypes.func.isRequired,
-    onOpen: PropTypes.func,
-    // trigger: PropTypes.node,
+    isOpen: PropTypes.bool,
+    onToggle: PropTypes.func,
   }
 
   static defaultProps = {
-    absolute: false,
-    left: 0,
-    overlay: true,
-    // relative: false,
-    top: 0,
-    onOpen: undefined,
+    children: null,
+    isOpen: undefined,
+    onToggle: undefined,
   }
 
-  state = { mounted: false };
-
-  componentDidMount() {
-    this.setState({ mounted: true });
+  static childContextTypes = {
+    dropdown: PropTypes.object,
   }
 
-  getMenuPosition = () => {
-    const { top, left } = this.props;
-    const triggerRect = this.trigger.getBoundingClientRect();
+  state = {
+    open: false,
+    controlled: isBoolean(this.props.isOpen),
+  }
 
+  getChildContext() {
     return {
-      top: sum([triggerRect.top, top]),
-      left: sum([
-        triggerRect.right,
-        left,
-      ]),
+      dropdown: {
+        isOpen: this.getOpen(),
+        setContent: this.setContent,
+      },
     };
   }
 
-  handleContainerRef = (node) => {
-    this.container = this.container || node;
+  componentDidMount() {
+    const { isOpen } = this.props;
+    if (isBoolean(isOpen) && isOpen && isBrowser) {
+      this.addListeners();
+    }
+  }
+
+  componentWillUnmount() {
+    if (isBrowser) {
+      this.removeListeners();
+    }
+  }
+
+  /* componentWillUpdate(nextProps, nextState) {
+   *   if (isBrowser) {
+   *     if (nextProps.isOpen || nextState.open) {
+   *       this.addListeners();
+   *     } else {
+   *       this.removeListeners();
+   *     }
+   *   }
+   * }
+   */
+
+  setContent = (node) => {
+    this.content = node;
+  }
+
+  getOpen() {
+    if (this.state.controlled) {
+      return this.props.isOpen;
+    }
+    return this.state.open;
+  }
+
+  handleClick = (e) => {
+    this.toggle(e);
+  }
+
+  handleDocumentMouseDown = (e) => {
+    const open = this.getOpen();
+    const eventFromTarget = this.trigger.contains(e.target);
+    const eventFromContent = this.content.contains(e.target);
+    const isExternalEvent = !eventFromTarget && !eventFromContent;
+
+    if (open && isExternalEvent) {
+      this.toggle(e);
+    }
+
+    e.stopPropagation();
+  }
+
+  handleKeyUp = (e) => {
+    if (isEscape(e)) {
+      this.close();
+    }
   }
 
   handleTriggerRef = (node) => {
     this.trigger = this.trigger || node;
   }
 
-  handleTriggerClick = (e) => {
-    const { open: isClosed, onOpen, onClick } = this.props;
+  addListeners() {
+    document.addEventListener('mousedown', this.handleDocumentMouseDown, true);
+  }
 
-    if (isFunction(onOpen) && isClosed) {
-      onOpen(e);
+  removeListeners() {
+    document.removeEventListener('mousedown', this.handleDocumentMouseDown, true);
+  }
+
+  toggle = (e) => {
+    const { controlled } = this.state;
+    const { onToggle } = this.props;
+    const open = this.getOpen();
+
+    if (open) {
+      this.removeListeners();
+    } else if (!open) {
+      this.addListeners();
     }
 
-    onClick();
+    safeInvoke(onToggle, [e, open]);
+
+    if (!controlled) this.setState({ open: !open });
   }
 
-  renderMenu = () => {
-    const { open } = this.props;
-    const { mounted } = this.state;
-    const menuPosition = mounted ? this.getMenuPosition() : undefined;
-
-    return (
-      <Fade in={open}>
-        <MenuBox {...menuPosition} className="menu" absolute>
-          <Menu>
-            <ul>
-              <li>menu item 1</li>
-              <li>menu item 2</li>
-              <li>menu item 3</li>
-            </ul>
-          </Menu>
-        </MenuBox>
-      </Fade>
-    );
+  renderTrigger(trigger) {
+    return React.cloneElement(React.Children.only(trigger), {
+      onClick: this.handleClick,
+    });
   }
-
-  renderThroughPortal = () => (
-    <Portal wrapper={false} mountNode={dropdownOverlay}>
-      {this.renderMenu()}
-    </Portal>
-  )
 
   render() {
-    const { overlay } = this.props;
+    const { children } = this.props;
 
+    const [trigger, content] = React.Children.toArray(children);
     return (
-      <Container className="dropdown" innerRef={this.handleContainerRef}>
-        <Button onClick={this.handleTriggerClick} className="no-draggable" innerRef={this.handleTriggerRef}>
-          <svg className="icon icon-dots-three-vertical">
-            <use xlinkHref="#icon-dots-three-vertical" />
-          </svg>
-        </Button>
-        {overlay ? this.renderThroughPortal() : this.renderMenu()}
-      </Container>
+      <Popover placement="bottom-start">
+        <Ref innerRef={this.handleTriggerRef}>
+          {this.renderTrigger(trigger)}
+        </Ref>
+        {content}
+      </Popover>
     );
   }
 }

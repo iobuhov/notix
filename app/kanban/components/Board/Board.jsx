@@ -33,17 +33,26 @@ export default (function BoardContext() {
       }
     }
 
+    handleBoardLeave = () => {
+      this.props.onDragStop();
+    }
+
     onDragStart = (id) => {
+      document.onselectstart = () => false;
       this.props.onDragStart(id);
     }
 
     onDrag = (id, e, { x, y }) => {
       this[controlledPosition] = { x, y };
+      if (typeof this.props.holding === 'undefined') return false;
     }
 
     onDragStop = () => {
+      document.onselectstart = null;
       this.positionReset();
-      this.props.onDragStop();
+      if (!(typeof this.props.holding === 'undefined')) {
+        this.props.onDragStop();
+      }
     }
 
     onPopupOpen = (...args) => {
@@ -62,7 +71,7 @@ export default (function BoardContext() {
 
 
       return (
-        <Box size={items.size} id="board" dragging={isHolding}>
+        <Box size={items.size} id="board" dragging={isHolding} onMouseLeave={this.handleBoardLeave}>
           <For each="record" index="idx" of={items}>
             <With
               defaultPosition={{ x: 10 + (idx * 300), y: 10 }}

@@ -25,7 +25,7 @@ export const Heading = PanelHeading.extend`
 export const Body = PanelBody.extend`
   padding: 0;
   overflow: hidden;
-  /* border-top: 1px solid #3b3f45; */
+  /* border-top: 1px solid #3b3f54; */
   line-height: 1.8em;
 `;
 

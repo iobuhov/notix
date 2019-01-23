@@ -1,10 +1,11 @@
+import style from 'consts/style';
 import styled, { css } from 'styled-components';
 import { bool } from 'prop-types';
 import { cond } from 'utils';
-import style from 'common/constants/style';
 
 const silent = css`
   pointer-events: none;
+  cursor: none;
 `;
 
 const dropping = css`
@@ -12,13 +13,10 @@ const dropping = css`
 `;
 
 const dragged = css`
+  z-index: ${style.zIndex.base};
   position: absolute;
   top: 0;
   left: 0;
-`;
-
-const dragging = css`
-  z-index: ${style.zIndex.base};
 `;
 
 const withHandle = css`
@@ -56,7 +54,6 @@ Container.propTypes = { dark: bool, frontal: bool };
 
 export const Wrapper = styled.div`
   ${cond('dragged', dragged)}
-  ${cond('dragging', dragging)}
   ${cond('dropping', dropping)}
   ${cond('silent', silent)}
   ${cond('withHandle', withHandle)}

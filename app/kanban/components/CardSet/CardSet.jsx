@@ -3,6 +3,8 @@ import { string, func } from 'prop-types';
 import { isFunction } from 'typechecker';
 import { propsSelector } from 'helpers';
 import Dropdown from 'common/dropdown';
+import { default as Menu } from './CardSetMenu';
+import { default as MenuButton } from './CardSetMenuButton';
 import {
   Container,
   Heading,
@@ -27,7 +29,10 @@ class CardSet extends PureComponent {
     onMenuOpen: undefined,
   }
 
-  state = { isEditMode: false }
+  state = {
+    isEditMode: false,
+    isMenuOpen: false,
+  }
 
   handleClick = (e) => {
     this.toggleEditMode();
@@ -43,15 +48,22 @@ class CardSet extends PureComponent {
     this.setState({ isEditMode: !this.state.isEditMode });
   };
 
+  toggleMenu = () => {
+    this.setState({ isMenuOpen: !this.state.isMenuOpen });
+  }
+
   render() {
     const { heading } = this.props;
-    const { isEditMode } = this.state;
+    // const { isMenuOpen } = this.state;
 
     return (
       <Container {...containerProps(this.props)}>
         <Heading className="drag-handle">
           <span>{heading}</span>
-          <Dropdown open={isEditMode} onClick={this.handleClick} />
+          <Dropdown>
+            <MenuButton className="no-draggable" />
+            <Menu />
+          </Dropdown>
         </Heading>
       </Container>
     );

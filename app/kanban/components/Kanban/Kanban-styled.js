@@ -2,11 +2,15 @@ import styled from 'styled-components';
 import ReactIScroll from 'react-iscroll';
 
 export const Container = styled.div`
-  flex: 1 1;
-  width: 100%;
   display: flex;
+  flex: 1 1;
   overflow: hidden;
   overflow-x: scroll;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 `;
 
 export const ScrollBox = styled(ReactIScroll)`

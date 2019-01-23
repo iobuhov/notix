@@ -38,7 +38,10 @@ export default class DraggableCardSet extends PureComponent {
   createHandler = key => (...args) => {
     const { record: { id } } = this.props;
     const handler = this.props[key];
-    if (isFunction(handler)) handler(id, ...args);
+
+    if (isFunction(handler)) {
+      return handler(id, ...args); // need retor for react-draggable
+    }
   }
 
   handleDrag = this.createHandler('onDrag');

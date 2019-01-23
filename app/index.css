@@ -13,7 +13,7 @@ html, body, #root {
 body {
   padding: 0;
   margin: 0;
-  background-color: #1D2227;
+  background-color: #21272e;
   color: #e8e8e8;
 }
 
@@ -45,3 +45,97 @@ Single-colored icons can be modified like so:
   color: red;
 }
 ========================================== */
+
+/*!
+ * Hamburgers
+ * @description Tasty CSS-animated hamburgers
+ * @author Jonathan Suh @jonsuh
+ * @site https://jonsuh.com/hamburgers
+ * @link https://github.com/jonsuh/hamburgers
+ */
+.hamburger {
+  position: absolute;
+  top: 0; right: 0;
+  padding: 0;
+  display: block;
+  cursor: pointer;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear;
+  font: inherit;
+  color: inherit;
+  text-transform: none;
+  background-color: transparent;
+  border: 0;
+  margin: 5px;
+  outline: none;
+  overflow: visible;}
+
+.hamburger-box {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  position: relative; }
+
+.hamburger-inner {
+  /* transform: translateY(-50%); */
+  /* margin-top: -1.5px; */
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  top: 50%; }
+
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+  width: 30px;
+  height: 3px;
+  background-color: #353d46;
+  border-radius: 6px;
+
+  transition-property: transform;
+  transition-duration: 0.15s;
+  transition-timing-function: ease; }
+
+.hamburger:hover .hamburger-inner,
+.hamburger:hover .hamburger-inner::before,
+.hamburger:hover .hamburger-inner::after {
+  background-color: #444f5a;
+}
+
+.hamburger-inner::before, .hamburger-inner::after {
+  left: 0; right: 0;
+  margin: auto;
+  position: absolute;
+  content: "";
+  display: block; }
+.hamburger-inner::before {
+  top: -9px; }
+.hamburger-inner::after {
+  bottom: -9px; }
+.hamburger--squeeze .hamburger-inner {
+  transition-duration: 0.075s;
+  transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19); }
+.hamburger--squeeze .hamburger-inner::before {
+  transition: top 0.075s 0.12s ease, opacity 0.075s ease; }
+.hamburger--squeeze .hamburger-inner::after {
+  transition: bottom 0.075s 0.12s ease, transform 0.075s cubic-bezier(0.55, 0.055, 0.675, 0.19); }
+.hamburger--squeeze.is-active .hamburger-inner {
+  transform: rotate(45deg);
+  transition-delay: 0.12s;
+  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
+.hamburger--squeeze.is-active .hamburger-inner::before {
+  top: 0;
+  opacity: 0;
+  transition: top 0.075s ease, opacity 0.075s 0.12s ease; }
+.hamburger--squeeze.is-active .hamburger-inner::after {
+  bottom: 0;
+  transform: rotate(-90deg);
+  transition: bottom 0.075s ease, transform 0.075s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1); }
+
+.logo {
+  text-decoration: none;
+  color: inherit;
+  font-size: 2.25rem;
+  font-weight: 100;
+  letter-spacing: 0.15em;
+}

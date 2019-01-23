@@ -6,9 +6,9 @@ const dragging = css`
 `;
 
 export const Box = styled.div`
+  align-self: stretch;
   padding: 10px;
   display: flex;
-  min-width: ${p => p.size * 320}px;
   position: relative;
   ${cond('dragging', dragging)}
 `;

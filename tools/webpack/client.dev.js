@@ -3,6 +3,7 @@ const merge = require('webpack-merge');
 const { paths } = require('../config');
 const common = require('./common');
 const HtmlPlugin = require('html-webpack-plugin');
+// const WebpackMonitor = require('webpack-monitor');
 const { HotModuleReplacementPlugin,
         NamedModulesPlugin } = webpack;
 const { CommonsChunkPlugin } = webpack.optimize;
@@ -31,10 +32,14 @@ const config = {
   },
   resolve: {
     alias: {
+      bootstrap: paths.bootstrap,
       common: paths.common,
+      consts: paths.consts,
       helpers: paths.helpers,
       kanban: paths.kanban,
       lib: paths.lib,
+      main: paths.main,
+      sidebar: paths.sidebar,
       utils: paths.utils,
     },
   },
@@ -73,6 +78,10 @@ const config = {
       name: 'vendor',
       minChunks: Infinity,
     }),
+//    new WebpackMonitor({
+//      capture: true,
+//      launch: true,
+//    }),
   ],
   output: {
     publicPath: '/',
